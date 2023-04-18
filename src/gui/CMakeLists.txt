@@ -38,19 +38,19 @@ if((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1"))
 endif()
 
 # Qt libraries
-find_package(Qt5 COMPONENTS Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml REQUIRED)
-set(QT_LIBRARIES Qt5::Concurrent Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::MultimediaWidgets Qt5::Network Qt5::Sql Qt5::Widgets Qt5::Xml)
+find_package(Qt6 COMPONENTS Core Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml REQUIRED)
+set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::Sql Qt6::Widgets Qt6::Xml)
 
 # Windows specials
 if(WIN32)
-	find_package(Qt5 COMPONENTS WinExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::WinExtras)
+	#find_package(Qt6 COMPONENTS WinExtras REQUIRED)
+	#set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::WinExtras)
 endif()
 
 # Android specials
 if(ANDROID)
-	find_package(Qt5 COMPONENTS AndroidExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt5::AndroidExtras)
+	find_package(Qt6 COMPONENTS AndroidExtras REQUIRED)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::AndroidExtras)
 endif()
 
 # QScintilla
