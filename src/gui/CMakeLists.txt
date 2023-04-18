@@ -41,12 +41,6 @@ endif()
 find_package(Qt6 COMPONENTS Core Concurrent Gui Network Multimedia MultimediaWidgets Sql Widgets Xml REQUIRED)
 set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Multimedia Qt6::MultimediaWidgets Qt6::Network Qt6::Sql Qt6::Widgets Qt6::Xml)
 
-# Windows specials
-if(WIN32)
-	#find_package(Qt6 COMPONENTS WinExtras REQUIRED)
-	#set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::WinExtras)
-endif()
-
 # Android specials
 if(ANDROID)
 	find_package(Qt6 COMPONENTS AndroidExtras REQUIRED)
@@ -98,7 +92,14 @@ file(GLOB SOURCES
 	"resources/*.rc"
 	"resources/*.qrc")
 file(GLOB_RECURSE FORMS "src/*.ui")
-include_directories("src/" "../lib/src/" "../lib/" "../cli/src/" "..")
+include_directories("src/" "../lib/src/" "../lib/" "../cli/src/" ".." ".")
+
+# Windows specials
+if(WIN32)
+	file(GLOB_RECURSE WINEXTRAS_SOURCES "vendor/winextras/*.cpp")
+	set(SOURCES ${SOURCES} ${WINEXTRAS_SOURCES})
+	list(APPEND LIBS "dwmapi.lib")
+endif()
 
 # Breakpad files
 if(USE_BREAKPAD)
