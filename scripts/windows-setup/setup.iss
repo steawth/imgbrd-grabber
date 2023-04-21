@@ -25,10 +25,6 @@
 # define MyAppVersion "7.10.1"
 #endif
 
-#ifndef QtApngDll
-# define QtApngDll QtPlugins + "\imageformats\qapng.dll"
-#endif
-
 #define PlatformNamePrefix ""
 #ifdef PlatformName
 # define PlatformNamePrefix "_" + PlatformName
