@@ -365,7 +365,6 @@ jobs:
       MYSQL_DRIVER_URL: https://github.com/thecodemonkey86/qt_mysql_driver/files/11133446/qsqlmysql.dll_Qt_SQL_driver_6.5.0_MSVC2019_64-bit.zip
       OPENSSL_ROOT_DIR: ${{ github.workspace }}\vendor\OpenSSL
       MYSQL_DRIVER_DIR: ${{ github.workspace }}\vendor\MySQL_driver
-      APNG_PLUGIN_DLL: ${{ github.workspace }}\vendor\APNG\plugins\imageformats\qapng.dll
       VCINSTALLDIR: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC
 
     steps:
@@ -436,18 +435,6 @@ jobs:
           7z x "mysql_driver.zip" -y -o"%MYSQL_DRIVER_DIR%"
           rm "mysql_driver.zip"
 
-      - name: Build APNG plugin
-        if: steps.vendor-cache.outputs.cache-hit != 'true'
-        working-directory: vendor
-        shell: cmd
-        run: |
-          git clone https://github.com/Skycoder42/QtApng APNG
-          cd APNG
-          git checkout $(git tag | tail -1)
-          call "%VCINSTALLDIR%\Auxiliary\Build\vcvarsall.bat" x64
-          qmake "CONFIG += libpng_static"
-          nmake
-
       - name: Build
         shell: cmd
         run: |
@@ -482,7 +469,6 @@ jobs:
             /DQtDir="%Qt6_Dir%\bin" ^
             /DOpenSSLDir="%OPENSSL_ROOT_DIR%" ^
             /DMySQLDir="%MYSQL_DRIVER_DIR%" ^
-            /DQtApngDll="%APNG_PLUGIN_DLL%" ^
             scripts\windows-setup\setup.iss
           mv scripts/windows-setup/Grabber_*.exe "Grabber_x64.exe
 
