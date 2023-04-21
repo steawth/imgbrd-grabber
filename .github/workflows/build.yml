@@ -564,6 +564,7 @@ jobs:
           -DQT_ANDROID_NDK_ROOT:PATH=$ANDROID_NDK_ROOT \
           -DQT_ANDROID_SDK_ROOT:PATH=$ANDROID_HOME \
           -DANDROID_STL:STRING=c++_shared \
+          -DQT_HOST_PATH:STRING=$Qt6_DIR \
           -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
           -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
           -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR/lib/cmake \
