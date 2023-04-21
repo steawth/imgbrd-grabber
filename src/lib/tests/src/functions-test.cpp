@@ -56,7 +56,7 @@ static QByteArray readFile(const QString &path)
 	return f.readAll();
 }
 
-static QFont makeFont(const QString &name, int size, bool usePixels, int weight, QFont::Style style)
+static QFont makeFont(const QString &name, int size, bool usePixels, QFont::Weight weight, QFont::Style style)
 {
 	QFont font(name);
 	if (usePixels) {
