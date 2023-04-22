@@ -523,7 +523,16 @@ jobs:
         sudo apt update
         sudo apt install libpulse-dev
 
-    - name: Install Qt
+    - name: Install Qt (host)
+      uses: jurplel/install-qt-action@v3
+      with:
+        cache: true
+        version: ${{ env.QT_VERSION }}
+        modules: ${{ env.QT_MODULES }}
+        target: desktop
+        arch: gcc_64
+
+    - name: Install Qt (android)
       uses: jurplel/install-qt-action@v3
       with:
         cache: true
@@ -548,6 +557,8 @@ jobs:
 
     - name: Build
       run: |
+        echo $Qt6_DIR
+        ls $Qt6_DIR/..
         mkdir build
         cd build
         export ANDROID_SDK_ROOT=$ANDROID_HOME
@@ -564,7 +575,7 @@ jobs:
           -DQT_ANDROID_NDK_ROOT:PATH=$ANDROID_NDK_ROOT \
           -DQT_ANDROID_SDK_ROOT:PATH=$ANDROID_HOME \
           -DANDROID_STL:STRING=c++_shared \
-          -DQT_HOST_PATH:STRING=$Qt6_DIR \
+          -DQT_HOST_PATH:STRING=$Qt6_DIR/../gcc_64 \
           -DCMAKE_CXX_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ \
           -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
           -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR/lib/cmake \

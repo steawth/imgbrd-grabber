@@ -98,11 +98,7 @@ endif()
 
 # Pre-compiled headers
 if(NOT DEFINED USE_PCH)
-	if(WIN32)
-		set(USE_PCH 1)
-	else()
-		set(USE_PCH 0)
-	endif()
+	set(USE_PCH 0)
 endif()
 if(USE_PCH)
 	include(cotire/CMake/cotire OPTIONAL RESULT_VARIABLE COTIRE_FILE_PATH)
