@@ -9,8 +9,7 @@ set(QT_LIBRARIES Qt6::Core Qt6::Core5Compat Qt6::Quick Qt6::Network)
 
 # Android specials
 if(ANDROID)
-	find_package(Qt6 COMPONENTS AndroidExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::AndroidExtras)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 
 # Input

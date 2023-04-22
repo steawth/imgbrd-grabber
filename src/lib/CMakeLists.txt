@@ -5,8 +5,7 @@ set(QT_LIBRARIES Qt6::Core Qt6::Concurrent Qt6::Gui Qt6::Network Qt6::NetworkAut
 
 # Android specials
 if(ANDROID)
-	find_package(Qt6 COMPONENTS AndroidExtras REQUIRED)
-	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::AndroidExtras)
+	set(QT_LIBRARIES ${QT_LIBRARIES} Qt6::CorePrivate)
 endif()
 
 # Lexbor

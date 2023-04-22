@@ -26,15 +26,15 @@
 
 #if defined(Q_OS_ANDROID)
 	#include <QStandardPaths>
-	#include <QtAndroid>
+	#include <QtCore/private/qandroidextras_p.h>
 	#include "logger.h"
 
 	bool checkPermission(const QString &perm)
 	{
-		auto already = QtAndroid::checkPermission(perm);
-		if (already == QtAndroid::PermissionResult::Denied) {
-			auto results = QtAndroid::requestPermissionsSync(QStringList() << perm);
-			if (results[perm] == QtAndroid::PermissionResult::Denied) {
+		auto already = QtAndroidPrivate::checkPermission(perm);
+		if (already == QtAndroidPrivate::PermissionResult::Denied) {
+			auto results = QtAndroidPrivate::requestPermissionsSync(QStringList() << perm);
+			if (results[perm] == QtAndroidPrivate::PermissionResult::Denied) {
 				return false;
 			}
 		}
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 	engine.load(url);
 
 	#if defined(Q_OS_ANDROID)
-		QtAndroid::hideSplashScreen(250);
+		QtAndroidPrivate::hideSplashScreen(250);
 	#endif
 
 	return app.exec();

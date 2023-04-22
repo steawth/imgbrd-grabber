@@ -16,7 +16,7 @@
 	#include <QScreen>
 #endif
 #ifdef Q_OS_ANDROID
-	#include <QAndroidJniObject>
+	#include <QJniObject>
 #endif
 
 #define MEASUREMENT_ENDPOINT_JSON "https://www.google-analytics.com/mp/collect"
@@ -112,7 +112,7 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 	query.addQueryItem("uab", QString::number(sizeof(void*) * 8));
 	query.addQueryItem("uamb", os.isAnyOfType({ QOperatingSystemVersion::Android, QOperatingSystemVersion::IOS }) ? "1" : "0");
 	#if defined(Q_OS_ANDROID)
-		query.addQueryItem("uam", QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString());
+		query.addQueryItem("uam", QJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString());
 	#elif defined(Q_OS_IOS)
 		query.addQueryItem("uam", "iPhone");
 	#else
@@ -159,8 +159,8 @@ void GoogleAnalytics4::sendEvent(const QString &name, const QVariantMap &paramet
 QString GoogleAnalytics4::userAgent() const
 {
 	#if false and defined(Q_OS_ANDROID)
-		QAndroidJniObject jsText = QAndroidJniObject::fromString("http.agent");
-		QAndroidJniObject ua = QAndroidJniObject::callStaticMethod<jstring>(
+		QJniObject jsText = QJniObject::fromString("http.agent");
+		QJniObject ua = QJniObject::callStaticMethod<jstring>(
 		"System",
 		"getProperty",
 		"(Ljava/lang/String;)Z",
