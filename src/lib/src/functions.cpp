@@ -1007,8 +1007,8 @@ QString qFontToCss(const QFont &font)
 		size = QString::number(font.pixelSize()) + "px";
 	}
 
-	// Should be "font.weight() * 8 + 100", but linux doesn't handle weight the same way windows do
-	const QString weight = QString::number(font.weight() * 8);
+	// Should be "font.weight() + 100", but linux doesn't handle weight the same way windows do
+	const QString weight = QString::number(font.weight());
 
 	QStringList decorations;
 	if (font.strikeOut()) {
