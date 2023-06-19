@@ -116,14 +116,14 @@ jobs:
       - name: Test
         working-directory: src/lib
         run: |
-          xvfb-run -a ../../build/lib/tests/lib-tests
-          xvfb-run -a ../../build/cli/tests/cli-tests
+          QT_QPA_PLATFORM=offscreen ../../build/lib/tests/lib-tests
+          QT_QPA_PLATFORM=offscreen ../../build/cli/tests/cli-tests
 
       - name: Test GUI
         working-directory: src/lib
         run: |
-          xvfb-run -a ../../build/gui/tests/gui-tests
-          xvfb-run -a ../../build/crash-reporter/tests/crash-reporter-tests
+          QT_QPA_PLATFORM=offscreen ../../build/gui/tests/gui-tests
+          QT_QPA_PLATFORM=offscreen ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Test sites
         working-directory: src/sites
@@ -233,14 +233,14 @@ jobs:
       - name: Test
         working-directory: src/lib
         run: |
-          xvfb-run -a ../../build/lib/tests/lib-tests
-          xvfb-run -a ../../build/cli/tests/cli-tests
+          QT_QPA_PLATFORM=offscreen ../../build/lib/tests/lib-tests
+          QT_QPA_PLATFORM=offscreen ../../build/cli/tests/cli-tests
 
       - name: Test GUI
         working-directory: src/lib
         run: |
-          xvfb-run -a ../../build/gui/tests/gui-tests
-          xvfb-run -a ../../build/crash-reporter/tests/crash-reporter-tests
+          QT_QPA_PLATFORM=offscreen ../../build/gui/tests/gui-tests
+          QT_QPA_PLATFORM=offscreen ../../build/crash-reporter/tests/crash-reporter-tests
 
       - name: Generate AppImage
         run: |
