@@ -578,7 +578,7 @@ jobs:
           -DCMAKE_C_COMPILER:STRING=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/clang \
           -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR/lib/cmake \
           -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR \
-          -DCMAKE_MODULE_PATH:STRING=$Qt6_DIR/lib/cmake \
+          -DCMAKE_MODULE_PATH:STRING="$Qt6_DIR/lib/cmake;$Qt6_DIR/../gcc_64/lib/cmake" \
           -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
           -DQT_QMAKE_EXECUTABLE:STRING=$Qt6_DIR/bin/qmake
         cmake --build . --config Release --target sites
