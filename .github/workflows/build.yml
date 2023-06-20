@@ -20,7 +20,7 @@ env:
   CMAKE_BUILD_PARALLEL_LEVEL: 2
   QSCINTILLA_VERSION: 2.13.0
   QSCINTILLA_DIR: QScintilla_src-2.13.0
-  ANDROID_NDK_VERSION: 21.4.7075529
+  ANDROID_NDK_VERSION: 25.1.8937393
 
 jobs:
   # Gatekeeper job to skip build for Crowdin PRs
