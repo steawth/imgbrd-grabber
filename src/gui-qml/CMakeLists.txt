@@ -40,14 +40,8 @@ else()
 	list(APPEND LIBS "WindowsApp.lib")
 endif()
 
-
-if(ANDROID)
-	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
-else()
-    add_executable(${PROJECT_NAME} ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
-endif()
-
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib)
+qt_add_executable(${PROJECT_NAME} ${SOURCES} ${STATUSBAR_SOURCES} ${UTILS_SOURCES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${QT_LIBRARIES} ${LIBS} lib)
 
 if(ANDROID)
 	# SSL
@@ -73,29 +67,24 @@ if(ANDROID)
 		COMMAND rsync -ar --exclude-from="../sites/exclude.txt" "../sites" "${ANDROID_PACKAGE_SOURCES_REL}/assets" WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
 		COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/languages/" "${ANDROID_PACKAGE_SOURCES}/assets/languages"
 	)
+	add_dependencies(${PROJECT_NAME} android_copy_assets_qml)
 
-	# Add target
-	include("qt-android-cmake/AddQtAndroidApk")
+	# Set Android properties
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+		QT_ANDROID_PACKAGE_SOURCE_DIR ${ANDROID_PACKAGE_SOURCES}
+		QT_ANDROID_VERSION_NAME ${ANDROID_APP_VERSION_NAME}
+		QT_ANDROID_VERSION_CODE ${ANDROID_APP_VERSION_CODE}
+	)
+	# NAME ${ANDROID_APP_NAME}
+	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
+
+	# Sign package if the keystore password was provided
 	if(KEYSTORE_PASSWORD)
-		add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
-			NAME ${ANDROID_APP_NAME}
-			VERSION_CODE ${ANDROID_APP_VERSION_CODE}
-			PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
-			PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
-			KEYSTORE "${CMAKE_CURRENT_LIST_DIR}/../../release.jks" release
-			KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
-			DEPENDS ${ANDROID_EXTRA_LIBS})
+		set_target_properties(${PROJECT_NAME} PROPERTIES QT_ANDROID_SIGN_APK ON)
+		set(ENV{"QT_ANDROID_KEYSTORE_PATH"} "${CMAKE_CURRENT_LIST_DIR}/../../release.jks")
+		set(ENV{"QT_ANDROID_KEYSTORE_ALIAS"} "release")
+		set(ENV{"QT_ANDROID_KEYSTORE_STORE_PASS"} "${KEYSTORE_PASSWORD}")
 	else()
 		message(WARNING "No keystore password provided, APK signing disabled")
-		add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
-			NAME ${ANDROID_APP_NAME}
-			VERSION_CODE ${ANDROID_APP_VERSION_CODE}
-			PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
-			PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
-			DEPENDS ${ANDROID_EXTRA_LIBS})
 	endif()
-	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets_qml)
-
-	# Override build.gradle
-	configure_file("${CMAKE_CURRENT_LIST_DIR}/../dist/android/build.gradle.in" "${QT_ANDROID_APP_BINARY_DIR}/build.gradle" @ONLY)
 endif()

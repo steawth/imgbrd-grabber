@@ -127,15 +127,13 @@ if(USE_BREAKPAD)
 	include_directories(${BREAKPAD}/src)
 endif()
 
-if(ANDROID)
-	add_library(${PROJECT_NAME} SHARED ${SOURCES} ${FORMS} ${UTILS_SOURCES})
-elseif(WIN32)
-	add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+if(WIN32)
+	qt_add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 else()
-	add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
+	qt_add_executable(${PROJECT_NAME} ${SOURCES} ${FORMS} ${UTILS_SOURCES})
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${LIBS} lib "cli-lib")
+target_link_libraries(${PROJECT_NAME} PRIVATE ${QT_LIBRARIES} ${LIBS} lib "cli-lib")
 
 if(ANDROID)
 	# SSL
@@ -161,18 +159,26 @@ if(ANDROID)
         COMMAND ${CMAKE_COMMAND} -E remove_directory "${ANDROID_PACKAGE_SOURCES}/assets/sites/node_modules/"
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/../languages/" "${ANDROID_PACKAGE_SOURCES}/assets/languages"
 	)
+	add_dependencies(${PROJECT_NAME} android_copy_assets)
 
-	# Add target
-	include("qt-android-cmake/AddQtAndroidApk")
-	add_qt_android_apk("${PROJECT_NAME}_apk" ${PROJECT_NAME}
-		NAME ${ANDROID_APP_NAME}
-		VERSION_CODE ${ANDROID_APP_VERSION_CODE}
-		PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
-		PACKAGE_SOURCES ${ANDROID_PACKAGE_SOURCES}
-		KEYSTORE "${CMAKE_CURRENT_LIST_DIR}/../../release.jks" release
-		KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
-		DEPENDS ${ANDROID_EXTRA_LIBS})
-	add_dependencies("${PROJECT_NAME}_apk" android_copy_assets_qml)
+	# Set Android properties
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+		QT_ANDROID_PACKAGE_SOURCE_DIR ${ANDROID_PACKAGE_SOURCES}
+		QT_ANDROID_VERSION_NAME ${ANDROID_APP_VERSION_NAME}
+		QT_ANDROID_VERSION_CODE ${ANDROID_APP_VERSION_CODE}
+	)
+	# NAME ${ANDROID_APP_NAME}
+	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
+
+	# Sign package if the keystore password was provided
+	if(KEYSTORE_PASSWORD)
+		set_target_properties(${PROJECT_NAME} PROPERTIES QT_ANDROID_SIGN_APK ON)
+		set(ENV{"QT_ANDROID_KEYSTORE_PATH"} "${CMAKE_CURRENT_LIST_DIR}/../../release.jks")
+		set(ENV{"QT_ANDROID_KEYSTORE_ALIAS"} "release")
+		set(ENV{"QT_ANDROID_KEYSTORE_STORE_PASS"} "${KEYSTORE_PASSWORD}")
+	else()
+		message(WARNING "No keystore password provided, APK signing disabled")
+	endif()
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/gui/$<0:>" OUTPUT_NAME "Grabber")
 	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

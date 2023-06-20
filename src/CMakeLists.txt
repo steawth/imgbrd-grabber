@@ -36,6 +36,9 @@ if(TRACE)
 	endif()
 endif()
 
+# Disable Qt dependency walking warnings
+set(QT_SILENCE_MISSING_DEPENDENCY_TARGET_WARNING ON)
+
 if((NOT DEFINED VERSION) OR ((DEFINED NIGHTLY) AND (NIGHTLY MATCHES "1")))
 	set(VERSION "7.11.0")
 else()
