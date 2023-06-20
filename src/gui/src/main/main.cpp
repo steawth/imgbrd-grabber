@@ -59,8 +59,6 @@
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
 	#ifdef WIN_FILE_PROPS
 		initializeWindowsProperties();
 	#endif
