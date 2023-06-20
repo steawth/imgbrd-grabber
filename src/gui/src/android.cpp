@@ -8,10 +8,10 @@
 
 bool checkPermission(const QString &perm)
 {
-	auto already = QtAndroidPrivate::checkPermission(perm);
+	auto already = QtAndroidPrivate::checkPermission(perm).result();
 	if (already == QtAndroidPrivate::PermissionResult::Denied) {
-		auto results = QtAndroidPrivate::requestPermissionsSync(QStringList() << perm);
-		if (results[perm] == QtAndroidPrivate::PermissionResult::Denied) {
+		auto result = QtAndroidPrivate::requestPermission(perm).result();
+		if (result == QtAndroidPrivate::PermissionResult::Denied) {
 			return false;
 		}
 	}
