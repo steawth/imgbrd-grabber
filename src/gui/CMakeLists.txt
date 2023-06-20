@@ -141,7 +141,9 @@ if(ANDROID)
 	# SSL
 	if(USE_SSL)
 		message(STATUS "Compiling with SSL support")
-		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/CMakeLists.txt")
+		include("${CMAKE_CURRENT_LIST_DIR}/../cmake/android_openssl/android_openssl.cmake")
+		add_android_openssl_libraries(${PROJECT_NAME})
+		get_target_property(ANDROID_EXTRA_LIBS ${PROJECT_NAME} QT_ANDROID_EXTRA_LIBS)
 		message(STATUS "Android libs: ${ANDROID_EXTRA_LIBS}")
 	endif()
 
