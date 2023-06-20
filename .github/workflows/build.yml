@@ -541,8 +541,10 @@ jobs:
         target: android
         arch: android_armv7
 
-    # Necessary as Qt 5.15 depends on NDK 21 and Github Actions use NDK 25 by default
-    - name: Install Android NDK 21
+    - name: Install Android platform and build tools
+      run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-31" "platform-tools" "build-tools;33.0.0"
+
+    - name: Install Android NDK 25
       run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;${ANDROID_NDK_VERSION}"
 
     - name: Download Android OpenSSL libraries
@@ -576,7 +578,7 @@ jobs:
           -DCMAKE_FIND_ROOT_PATH:STRING=$Qt6_DIR/lib/cmake \
           -DCMAKE_PREFIX_PATH:STRING=$Qt6_DIR \
           -DCMAKE_MODULE_PATH:STRING="$Qt6_DIR/lib/cmake;$Qt6_DIR/../gcc_64/lib/cmake" \
-          -DCMAKE_TOOLCHAIN_FILE:PATH=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
+          -DCMAKE_TOOLCHAIN_FILE:PATH=$Qt6_DIR/lib/cmake/Qt6/qt.toolchain.cmake \
           -DQT_QMAKE_EXECUTABLE:STRING=$Qt6_DIR/bin/qmake \
           -DQt6LinguistTools_DIR="$Qt6_DIR/../gcc_64/lib/cmake/Qt6LinguistTools" \
           -DQT_DEBUG_FIND_PACKAGE=ON \
