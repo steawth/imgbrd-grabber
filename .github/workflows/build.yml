@@ -585,7 +585,7 @@ jobs:
           -DQT_DEBUG_FIND_PACKAGE=ON \
           --debug-find-pkg=Qt6LinguistTools
         cmake --build . --config Release --target sites
-        cmake --build . --config Release --target gui-qml_apk
+        cmake --build . --config Release --target gui-qml_make_apk
 
     - name: Generate package
       run: |
