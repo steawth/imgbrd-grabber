@@ -442,6 +442,7 @@ jobs:
           cd build
           cmake ..\src -G "Visual Studio 16 2019" -A "x64" ^
             -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+            -DCMAKE_SYSTEM_VERSION=10.0.18362.0 ^
             -DNIGHTLY=%GRABBER_IS_NIGHTLY% ^
             -DCOMMIT="%GITHUB_SHA%" ^
             -DVERSION="%GRABBER_VERSION%" ^
