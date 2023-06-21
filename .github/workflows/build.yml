@@ -543,7 +543,7 @@ jobs:
         arch: android_armv7
 
     - name: Install Android platform and build tools
-      run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-31" "platform-tools" "build-tools;33.0.0"
+      run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "platform-tools" "build-tools;33.0.0"
 
     - name: Install Android NDK 25
       run: echo "y" | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;${ANDROID_NDK_VERSION}"
