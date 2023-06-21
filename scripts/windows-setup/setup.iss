@@ -8,7 +8,7 @@
 #define SrcDir RootDir + "\src"
 
 #ifndef QtDir
-# define QtDir "C:\Qt\Qt5.15.1\5.15.1\msvc2019_64\bin"
+# define QtDir "C:\Qt\Qt6.5.0\6.5.0\msvc2019_64\bin"
 #endif
 #define QtPlugins QtDir + "\..\plugins"
 #define QtLib QtDir + "\..\lib"
@@ -102,7 +102,7 @@ Source: "{#OpenSSLDir}\libssl-1_1-x64.dll";     DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\D3Dcompiler_47.dll";          DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\opengl32sw.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\libmysql.dll";             DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtLib}\qscintilla2_qt5.dll";         DestDir: "{app}"; Flags: ignoreversion
+Source: "{#QtLib}\qscintilla2_qt6.dll";         DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Concurrent.dll";           DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Core.dll";                 DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Gui.dll";                  DestDir: "{app}"; Flags: ignoreversion
@@ -116,7 +116,6 @@ Source: "{#QtDir}\Qt6Qml.dll";                  DestDir: "{app}"; Flags: ignorev
 Source: "{#QtDir}\Qt6Sql.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Svg.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Widgets.dll";              DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtDir}\Qt6WinExtras.dll";            DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6Xml.dll";                  DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\ChineseSimplified.qm"; DestDir: "{app}\crashreporter"; Flags: ignoreversion
 Source: "{#BuildDir}\crash-reporter\languages\English.qm";  DestDir: "{app}\crashreporter"; Flags: ignoreversion
