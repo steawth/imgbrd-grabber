@@ -150,8 +150,7 @@ Source: "{#SrcDir}\dist\common\languages\languages.ini";  DestDir: "{app}\langua
 Source: "{#QtDir}\..\translations\qtbase_en.qm";   DestDir: "{app}\languages\qt"; DestName: "English.qm"; Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_fr.qm";   DestDir: "{app}\languages\qt"; DestName: "French.qm";  Flags: ignoreversion
 Source: "{#QtDir}\..\translations\qtbase_ru.qm";   DestDir: "{app}\languages\qt"; DestName: "Russian.qm"; Flags: ignoreversion
-Source: "{#QtPlugins}\mediaservice\dsengine.dll";  DestDir: "{app}\mediaservice"; Flags: ignoreversion; OnlyBelowVersion: 6.0.6
-Source: "{#QtPlugins}\mediaservice\wmfengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion; MinVersion: 6.0.6
+Source: "{#QtPlugins}\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\multimedia"; Flags: ignoreversion
 Source: "{#QtPlugins}\platforms\qwindows.dll";     DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlite.dll";     DestDir: "{app}\sqldrivers"; Flags: ignoreversion
 Source: "{#QtPlugins}\sqldrivers\qsqlmysql.dll";   DestDir: "{app}\sqldrivers"; Flags: ignoreversion

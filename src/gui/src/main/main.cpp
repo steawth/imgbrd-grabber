@@ -59,6 +59,10 @@
 
 int main(int argc, char *argv[])
 {
+	#if defined(Q_OS_WIN)
+		qputenv("QT_MEDIA_BACKEND", "windows");
+	#endif
+
 	#ifdef WIN_FILE_PROPS
 		initializeWindowsProperties();
 	#endif
