@@ -20,6 +20,7 @@ class QtGoogleAnalytics : public QObject
 
 	public:
 		explicit QtGoogleAnalytics(QObject *parent = nullptr);
+		explicit QtGoogleAnalytics(const QString &measurementId, QObject *parent = nullptr);
 
 	public:
 		void setMeasurementId(const QString &measurementId);
@@ -49,6 +50,7 @@ class QtGoogleAnalytics : public QObject
 	private:
 		QNetworkAccessManager *m_networkAccessManager;
 		UserAgentClientHints m_uach;
+		QString m_userAgent;
 
 		unsigned int m_sessionId;
 		QDateTime m_lastEvent;

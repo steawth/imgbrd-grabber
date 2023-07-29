@@ -1,28 +1,33 @@
 #include "qt-google-analytics.h"
 #include <QCoreApplication>
 #include <QRandomGenerator>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QJsonDocument>
 #include <QSettings>
 #include <QString>
 #include <QUrl>
 #include <QUrlQuery>
 #include <QVariant>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QOperatingSystemVersion>
+#include "chromium-user-agent.h"
 
 #ifdef QT_GUI_LIB
 	#include <QGuiApplication>
 	#include <QScreen>
 #endif
 #ifdef Q_OS_ANDROID
-	#include <QJniObject>
+	#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		#include <QJniObject>
+	#else
+		#include <QAndroidJniObject>
+		typedef QAndroidJniObject QJniObject;
+	#endif
 #endif
 
 #define MEASUREMENT_ENDPOINT_WEB "https://www.google-analytics.com/g/collect"
 #define CLIENT_ID_SETTINGS_KEY "QtGoogleAnalytics/ClientId"
 #define SESSION_START_INTERVAL_SECONDS 1800
+#define USER_AGENT_PRODUCT "Chrome/114.0.0.0"
 
 
 #include "functions.h"
@@ -40,6 +45,14 @@ QtGoogleAnalytics::QtGoogleAnalytics(QObject *parent)
 	} else {
 		m_clientId = settings.value(CLIENT_ID_SETTINGS_KEY).toString();
 	}
+
+	m_userAgent = userAgent();
+}
+
+QtGoogleAnalytics::QtGoogleAnalytics(const QString &measurementId, QObject *parent)
+	: QtGoogleAnalytics(parent)
+{
+	m_measurementId = measurementId;
 }
 
 
@@ -95,8 +108,6 @@ bool QtGoogleAnalytics::debugModeEnabled() const
 	return m_debugModeEnabled;
 }
 
-#include <QEventLoop>
-#include <QNetworkReply>
 
 void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parameters)
 {
@@ -116,6 +127,15 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 		{ "sct", "1" },
 		{ "_et", "1" }, // Necessary for users to be created
 		{ "en", name },
+
+		// Operating System information
+		{ "uaa", m_uach.arch() },
+		{ "uab", m_uach.bitness() },
+		{ "uamb", m_uach.mobile() ? "1" : "0" },
+		{ "uam", m_uach.model() },
+		{ "uap", m_uach.platform() },
+		{ "uapv", m_uach.platformVersion() },
+		{ "uaw", m_uach.wow64() ? "1" : "0" },
 	};
 	if (!m_userId.isEmpty()) {
 		query.addQueryItem("uid", m_userId);
@@ -132,15 +152,6 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 	if (m_isFirstVisit) {
 		query.addQueryItem("_fv", "1");
 	}
-
-	// Operating System information
-	query.addQueryItem("uaa", m_uach.arch());
-	query.addQueryItem("uab", m_uach.bitness());
-	query.addQueryItem("uamb", m_uach.mobile() ? "1" : "0");
-	query.addQueryItem("uam", m_uach.model());
-	query.addQueryItem("uap", m_uach.platform());
-	query.addQueryItem("uapv", m_uach.platformVersion());
-	query.addQueryItem("uaw", m_uach.wow64() ? "1" : "0");
 
 	// Events
 	for (auto it = parameters.constBegin(); it != parameters.constEnd(); ++it) {
@@ -163,7 +174,8 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 	url.setQuery(query);
 
 	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::UserAgentHeader, userAgent().toLatin1());
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	request.setHeader(QNetworkRequest::UserAgentHeader, m_userAgent);
 	m_uach.setRequestHeaders(request);
 
 	QNetworkReply *reply = m_networkAccessManager->post(request, QByteArray());
@@ -189,22 +201,16 @@ void QtGoogleAnalytics::sendEvent(const QString &name, const QVariantMap &parame
 
 QString QtGoogleAnalytics::userAgent() const
 {
-	#if false and defined(Q_OS_ANDROID)
-		QJniObject jsText = QJniObject::fromString("http.agent");
-		QJniObject ua = QJniObject::callStaticMethod<jstring>(
-		"System",
-		"getProperty",
-		"(Ljava/lang/String;)Z",
-		jsText.object<jstring>()
-		);
-		return ua.toString();
+	#if defined(Q_OS_ANDROID)
+		// On Android, just use System.getProperty("http.agent")
+		return QJniObject::callStaticObjectMethod(
+			"System",
+			"getProperty",
+			"(Ljava/lang/String;)Z",
+			QJniObject::fromString("http.agent").object<jstring>()
+		).toString();
 	#endif
 
-	return "";
-
-	const QString appName = QCoreApplication::instance()->applicationName();
-	const QString appVersion = QCoreApplication::instance()->applicationVersion();
-	const QString systemInfo = QString("%1 %2").arg(QOperatingSystemVersion::current().name(), m_uach.platformVersion());
-
-	return QString("%1/%2 (%3) QtQtGoogleAnalytics/1.0 (Qt/%4)").arg(appName, appVersion, systemInfo, QT_VERSION_STR);
+	// On other platforms, use a Chrome User-Agent
+	return buildUserAgentForProduct(USER_AGENT_PRODUCT);
 }

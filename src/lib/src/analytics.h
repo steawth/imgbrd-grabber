@@ -3,7 +3,7 @@
 
 #include <QVariantMap>
 #include "vendor/ganalytics.h"
-#include "vendor/qt-google-analytics/src/qt-google-analytics.h"
+#include "vendor/qt-google-analytics/qt-google-analytics.h"
 
 
 class QString;
