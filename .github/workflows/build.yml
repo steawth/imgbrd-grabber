@@ -557,7 +557,7 @@ jobs:
 
     - name: Build
       env:
-        QT_ANDROID_KEYSTORE_PATH: release.jks
+        QT_ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/release.jks
         QT_ANDROID_KEYSTORE_ALIAS: release
         QT_ANDROID_KEYSTORE_STORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       run: |
