@@ -170,14 +170,11 @@ if(ANDROID)
 	# NAME ${ANDROID_APP_NAME}
 	# PACKAGE_NAME ${ANDROID_APP_PACKAGE_NAME}
 
-	# Sign package if the keystore password was provided
-	if(KEYSTORE_PASSWORD)
+	# Sign package if the keystore was provided
+	if(DEFINED ENV{QT_ANDROID_KEYSTORE_PATH})
 		set_target_properties(${PROJECT_NAME} PROPERTIES QT_ANDROID_SIGN_APK ON)
-		set(ENV{"QT_ANDROID_KEYSTORE_PATH"} "${CMAKE_CURRENT_LIST_DIR}/../../release.jks")
-		set(ENV{"QT_ANDROID_KEYSTORE_ALIAS"} "release")
-		set(ENV{"QT_ANDROID_KEYSTORE_STORE_PASS"} "${KEYSTORE_PASSWORD}")
 	else()
-		message(WARNING "No keystore password provided, APK signing disabled")
+		message(WARNING "No keystore provided, APK signing disabled")
 	endif()
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/gui/$<0:>" OUTPUT_NAME "Grabber")
