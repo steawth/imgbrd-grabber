@@ -95,10 +95,10 @@ Source: "{#BuildDir}\CrashReporter\CrashReporter.exe"; DestDir: "{app}"; Flags: 
 Source: "{#BuildDir}\cli\Grabber-cli.exe";      DestDir: "{app}"; Flags: ignoreversion; DestName: "Grabber.com"
 Source: "{#BuildDir}\gui\Grabber.exe";          DestDir: "{app}"; Flags: ignoreversion;
 Source: "{#SrcDir}\dist\common\words.txt";      DestDir: "{app}";
-Source: "{#OpenSSLDir}\libcrypto-1_1.dll";      DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#OpenSSLDir}\libcrypto-1_1-x64.dll";  DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#OpenSSLDir}\libssl-1_1.dll";         DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
-Source: "{#OpenSSLDir}\libssl-1_1-x64.dll";     DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libcrypto-3.dll";        DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libcrypto-3-x64.dll";    DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libssl-3.dll";           DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#OpenSSLDir}\libssl-3-x64.dll";       DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#QtDir}\D3Dcompiler_47.dll";          DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtDir}\opengl32sw.dll";              DestDir: "{app}"; Flags: ignoreversion
 Source: "{#MySQLDir}\libmysql.dll";             DestDir: "{app}"; Flags: ignoreversion
@@ -280,7 +280,13 @@ Type: files; Name: "{app}\libgcc_s_dw2-1.dll"
 Type: files; Name: "{app}\libeay32.dll"
 Type: files; Name: "{app}\libssl32.dll"
 Type: files; Name: "{app}\ssleay32.dll"
+; OpenSSL 1.1 DLLs (Qt 6.5 moved to OpenSSL 3)
+Type: files; Name: "{app}\libcrypto-1_1.dll"
+Type: files; Name: "{app}\libcrypto-1_1-x64.dll"
+Type: files; Name: "{app}\libssl-1_1.dll"
+Type: files; Name: "{app}\libssl-1_1-x64.dll"
 ; Qt5 DLLs
+Type: files; Name: "{app}\qscintilla2_qt5.dll"
 Type: files; Name: "{app}\libEGL.dll"
 Type: files; Name: "{app}\libGLESv2.dll"
 Type: files; Name: "{app}\Qt5Concurrent.dll"
