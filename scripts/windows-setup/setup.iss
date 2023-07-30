@@ -136,6 +136,9 @@ Source: "{#QtPlugins}\imageformats\qtga.dll";   DestDir: "{app}\imageformats"; F
 Source: "{#QtPlugins}\imageformats\qtiff.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwbmp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtPlugins}\imageformats\qwebp.dll";  DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtPlugins}\tls\qschannelbackend.dll";DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtPlugins}\tls\qopensslbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtPlugins}\tls\qcertonlybackend.dll";DestDir: "{app}\tls"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\ChineseSimplified.qm"; DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\English.qm";     DestDir: "{app}\languages"; Flags: ignoreversion
 Source: "{#BuildDir}\languages\French.qm";      DestDir: "{app}\languages"; Flags: ignoreversion
